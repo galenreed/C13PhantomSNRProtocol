@@ -7,8 +7,8 @@ We are currently using the X cm diameter dimethyl silicone (DMS) phantom from GE
 * Prescribe an axial slice, 32 cm FOV, 2 cm slice thickness, 4s TR. 
 * Calibrate the flip angle with the slice-select pulse by setting xmtaddSCAN = 0, soft = 1, pf_rf1 =3600, and ia_rf1 = 32767. Enter the SpectroPrescan screen, and set the center frequency to that of the DMS resonance (which should be 2kHz lower than that of ethylene glycol at 3T). Note the TG value which gives a signal null
 * copy and paste the sequence and change the following CVs:
- - TR  = 500 ms 
- - cv0 = 5000 (receive bandwidth in Hz)
+	- TR  = 500 ms 
+	- cv0 = 5000 (receive bandwidth in Hz)
  - cv1 = 256 (number of frequency samples)
  - cv3 = 1
  - cv5 = 16 (X resolution)
