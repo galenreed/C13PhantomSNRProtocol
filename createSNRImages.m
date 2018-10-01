@@ -6,9 +6,9 @@ clear all;
 close all;
 addpath('utils');
 
-%if(isOctave())
-%    pkg load image;
-%end
+if(isOctave())
+    pkg load image;
+end
 
 % the pfile format changed with dv26, so a new script for loading data m ust be used
 % furthermore, there is a change (either in the reading script or file format) that 
