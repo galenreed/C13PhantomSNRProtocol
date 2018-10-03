@@ -16,4 +16,11 @@ We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom
 * set NEX = 2
 * Save, download, note the center frequency remains the same, and set the TG to TGnull - 60 (for a 90 degree pulse), and then ia_rf1 = 8192 (for a 22.5 degree pulse) 		  
  
+ #### Processing
+ Copy the pfiles from the scanner into the directory that conatins
+ this script (or subdirectory within). Edit the cell array "files" to
+ point to each pfile. Each entry in this list needs a correspoding
+ entry to the array 'dv26Flag.' This is set to '1' if acquired on
+ DV26, 0 otherwise 
+
 

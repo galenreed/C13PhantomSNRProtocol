@@ -6,15 +6,12 @@ clear all;
 close all;
 addpath('utils');
 
-if(isOctave())
-    pkg load image;
-end
 
 % the pfile format changed with dv26, so a new script for loading data m ust be used
 % furthermore, there is a change (either in the reading script or file format) that 
 % transposes the X and Y coordinates, so this must be considered when sorting
 files = {'toronto/P44032.7', 'mskcc/P87552.7'};
-dv26Flag = [0 0 0];
+dv26Flag = [0 0];
 
 
 % take a square patch on the top left corner with this edge size
