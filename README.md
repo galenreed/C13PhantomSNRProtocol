@@ -1,7 +1,7 @@
 ## C13PhantomSNRProtocol
-#### Introduction
+### Introduction
 This code is created to allow cross-experiment testing of receive arrays for large volume phantoms. The current example shows comparison of 2 13C-tuned receive coils compared between different sites. 
-#### Experimental Protocol
+### Experimental Protocol
 We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom from GE. 
 * Grab the broadband PSD: New Task -> Template -> GE -> 2D MNS FidCSI
 * Prescribe an axial slice, 32 cm FOV, 2 cm slice thickness, 4s TR. 
@@ -16,8 +16,8 @@ We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom
 * set NEX = 2
 * Save, download, note the center frequency remains the same, and set the TG to TGnull - 60 (for a 90 degree pulse), and then ia_rf1 = 8192 (for a 22.5 degree pulse) 		  
 
-####  Processing
-###  Obtain the GE pfile I/O matlab scripts
+###  Processing
+####  Obtain the GE pfile I/O matlab scripts
 The processing scripts provided here require the pfile reader provided
 with the most up-to-date verion of the EPIC SDK. To obtain this, go to
 https://collaborate.mr.gehealthcare.com/community/downloads/epic and
