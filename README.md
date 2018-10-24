@@ -27,11 +27,22 @@ will find the main rpm file, with a name like
 (in mac, double clicking opens the unarchiver app) and create a new
 subfolder to unpack, for instance called "unpack." This will create a
 .cpio file in this subfolder. Now, from the terminal, you can extract
-the contents of this file by running "cpio -idv < [outfile]." For
-instance, "cpio -idv < DV25.1_R02_ESElinux.cpio." In the folder
-[ESE_release]/tools/matlab,  there will be a folder called "read_MR."
+the contents of this file by running
+```
+cpio -idv < [outfile
+```
+For example,
+```
+cpio -idv < RX27.0_R02_ESElinux.cpio
+```
+In the folder [ESE_release]/tools/matlab,  there will be a folder called "read_MR."
 Add this folder to your matlab path. 
 
-
+####  Octave Compatibility
+This script has been tested in octave. It requires the image package
+to be installed and loaded
+```
+pkg load image
+```
 
 
