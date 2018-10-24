@@ -5,7 +5,7 @@
 clear all; 
 close all;
 addpath('utils');
-addpath('read_MR_25');
+addpath('read_MR');
 
 
 files = {'toronto/P44032.7', 'utsw20180925/image/P72192.7'};
