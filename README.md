@@ -40,7 +40,7 @@ Add this folder to your matlab path.
 
 ####  Executing the scripts
 To run the processing scripts, open createSNRImages.m. Make sure the
-path pointing to the read_MR is correct. Update the cell array 'files'
+path pointing to the read_MR folder is correct. Update the cell array 'files'
 with the relative path to your files, and then execute the script. 
 
 To run this script in octave, the image package
