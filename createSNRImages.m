@@ -5,14 +5,10 @@
 clear all; 
 close all;
 addpath('utils');
+addpath('read_MR_25');
 
 
-% the pfile format changed with dv26, so a new script for loading data m ust be used
-% furthermore, there is a change (either in the reading script or file format) that 
-% transposes the X and Y coordinates, so this must be considered when sorting
-files = {'toronto/P44032.7', 'mskcc/P87552.7'};
-dv26Flag = [0 0];
-
+files = {'toronto/P44032.7', 'utsw20180925/image/P72192.7'};
 
 % take a square patch on the top left corner with this edge size
 noiseRegionSize = 10;
@@ -22,16 +18,12 @@ snrMaps = {};
 fileNameRoot = 'snrMaps';
 
 
-
-
 for ii = 1:length(files)
   
   % read the PFile
-  if(dv26Flag(ii) == 1)
-    [rawData, header, ec] = read_MR_rawdata(files{ii});
-  else
-    [rawData, header] = rawloadX(files{ii});
-  end
+  %[rawData, header] = read_p(files{ii}, 0);
+  [rawData, header, ec] = read_MR_rawdata(files{ii});
+  
   squeezedData = squeeze(rawData);
   
   % check for multiple receivers
@@ -41,7 +33,7 @@ for ii = 1:length(files)
   end
   
   % reconstruct individual coil images
-  rawImages = fftAndZeroPad(squeezedData, dv26Flag(ii));
+  rawImages = fftAndZeroPad(squeezedData);
   
   % do a sum of squares over channels if needed
   sosImages = [];
