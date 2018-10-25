@@ -17,6 +17,30 @@ We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom
 * Save, download, note the center frequency remains the same, and set the TG to TGnull - 60 (for a 90 degree pulse), and then ia_rf1 = 8192 (for a 22.5 degree pulse) 		  
 
 ###  Processing
+
+####  Executing the scripts
+To run the processing scripts, open createSNRImages.m. Make sure the
+path pointing to the read_MR folder is correct (to obtain access to
+the GE PFile reading scripts, see instructions below). Update the cell array 'files'
+with the relative path to your files. There are several reconstruction
+parameters here. These are the default values. 
+- params.integrationWindow = 450; % [Hz] spectra integration width for
+  generating image. This parameter seems to comfortably cover the DMS
+  splitting with adequate buffer to not be too shim-sensitive. 
+- params.lineBroadening = 3; % [Hz] line broadening filter width 
+- params.noiseRegionSize = 10; % [pixels] noise calculated from a square with this edge size
+- params.reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
+- params.doPlot = 1;% make a plot of the summed spectra with
+  integration limits. This is a good sanity check to make sure the
+  spectra are fully covered in the integration window. 
+
+To run this script in octave, the image package
+to be installed and loaded
+```
+pkg load image
+```
+
+
 ####  Obtain the GE pfile I/O matlab scripts
 The processing scripts provided here require the pfile reader provided
 with the most up-to-date verion of the EPIC SDK. To obtain this, go to
@@ -37,16 +61,5 @@ cpio -idv < RX27.0_R02_ESElinux.cpio
 ```
 In the folder [ESE_release]/tools/matlab,  there will be a folder called "read_MR."
 Add this folder to your matlab path. 
-
-####  Executing the scripts
-To run the processing scripts, open createSNRImages.m. Make sure the
-path pointing to the read_MR folder is correct. Update the cell array 'files'
-with the relative path to your files, and then execute the script. 
-
-To run this script in octave, the image package
-to be installed and loaded
-```
-pkg load image
-```
 
 

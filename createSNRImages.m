@@ -10,20 +10,17 @@ addpath('read_MR');
 
 files = {'b1mappingUTSWTorso/45/P55296.7', 'b1mappingUTSWTorso/90/P54272.7'};
 
-
-
+%
+% reconstruction parameters
+params.integrationWindow = 450; % [Hz] spectra integration width for generating image
+params.lineBroadening = 3; % [Hz] line broadening filter width 
+params.noiseRegionSize = 10; % [pixels] noise calculated from a square with this edge size
 params.reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
-params.integrationWindow = .18; % spectra integration width
-params.windowWidth = .3; % FID window width
-params.noiseRegionSize = 10; % noise calculated from a square with this edge size
 params.doPlot = 1;% make a plot of the summed spectra with integration limits
 
 sosImages = {};
 snrMaps = {};
 fileNameRoot = 'snrMaps';
-
-
-
 RECONSNRMAPS = 0;
 RECONB1MAP = 1;
 
@@ -41,7 +38,7 @@ for ii = 1:length(files)
   end
   
   % reconstruct individual coil images
-  rawImages = fftAndZeroPad(squeezedData, params);
+  rawImages = fftAndZeroPad(squeezedData, params, header);
   
   % do a sum of squares over channels if needed
   sosImages = [];
@@ -70,7 +67,6 @@ for ii = 1:length(files)
   save(thisFileName, 'snrMap');
   
 end
-
 
 
 %%plot
