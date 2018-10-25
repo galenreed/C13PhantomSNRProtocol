@@ -10,13 +10,13 @@ addpath('read_MR');
 
 files = {'b1mappingUTSWTorso/45/P55296.7', 'b1mappingUTSWTorso/90/P54272.7'};
 
-% take a square patch on the top left corner with this edge size
 
 
-reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
-integrationWindow = .2; % spectra integration width
-windowWidth = .3; % FID window width
-noiseRegionSize = 10;
+params.reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
+params.integrationWindow = .18; % spectra integration width
+params.windowWidth = .3; % FID window width
+params.noiseRegionSize = 10; % noise calculated from a square with this edge size
+params.doPlot = 1;% make a plot of the summed spectra with integration limits
 
 sosImages = {};
 snrMaps = {};
@@ -41,7 +41,7 @@ for ii = 1:length(files)
   end
   
   % reconstruct individual coil images
-  rawImages = fftAndZeroPad(squeezedData, windowWidth, integrationWindow, 1);
+  rawImages = fftAndZeroPad(squeezedData, params);
   
   % do a sum of squares over channels if needed
   sosImages = [];
@@ -56,8 +56,8 @@ for ii = 1:length(files)
   end
   
   % turn magnitude images into SNR maps
-  if(reconMode == RECONSNRMAPS)
-    noiseRegion = sosImages(1:noiseRegionSize, 1:noiseRegionSize);
+  if(params.reconMode == RECONSNRMAPS)
+    noiseRegion = sosImages(1:params.noiseRegionSize, 1:params.noiseRegionSize);
     noise = std(noiseRegion(:));
     noiseBias = mean(noiseRegion(:));
     snrMap = (sosImages) / noise;
