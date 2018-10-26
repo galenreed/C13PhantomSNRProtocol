@@ -14,7 +14,7 @@ files = {'b1mappingUTSWTorso/45/P55296.7', 'b1mappingUTSWTorso/90/P54272.7'};
 % reconstruction parameters
 params.integrationWindow = 450; % [Hz] spectra integration width for generating image
 params.lineBroadening = 3; % [Hz] line broadening filter width 
-params.noiseRegionSize = 10; % [pixels] noise calculated from a square with this edge size
+params.noiseRegionSize = 8; % [pixels] noise calculated from a square with this edge size
 params.reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
 params.doPlot = 1;% make a plot of the summed spectra with integration limits
 
@@ -54,9 +54,7 @@ for ii = 1:length(files)
   
   % turn magnitude images into SNR maps
   if(params.reconMode == RECONSNRMAPS)
-    noiseRegion = sosImages(1:params.noiseRegionSize, 1:params.noiseRegionSize);
-    noise = std(noiseRegion(:));
-    noiseBias = mean(noiseRegion(:));
+    [mask, noise] = createMaskAndCalculateNoise(sosImages, params);
     snrMap = (sosImages) / noise;
   else 
     snrMap = sosImages;
@@ -70,6 +68,8 @@ end
 
 
 %%plot
+thetaSOS = []; 
+twothetaSOS = [];
 figure();
 for ii = 1:length(files)
   % read from file
@@ -83,7 +83,34 @@ for ii = 1:length(files)
   
   %cleanup
   delete(thisFileName);
+  
+  % grab save the theta/2theta maps if b1mapping
+  if(params.reconMode == RECONB1MAP)
+    if(ii == 1)
+      thetaSOS = snrMap;
+    elseif(ii == 2)
+      twothetaSOS = snrMap;
+    end
+  end
 end
+
+
+% calculate and display the B1 map
+if(params.reconMode == RECONB1MAP)
+  ratioMap = twothetaSOS ./ thetaSOS;
+  estAngle = acos(0.5 * ratioMap) * 180 / pi;
+  percentNominal = estAngle * 100 / 45;
+  [mask, noise] = createMaskAndCalculateNoise(twothetaSOS, params);
+  percentNominal = percentNominal .* mask;
+  
+  figure();
+  imagesc(percentNominal', [50 150])
+  colormap jet;
+  colorbar();
+  title('percent nominal B_1');
+  set(gca, 'xtick', [], 'ytick', []);
+end
+
 
 
 

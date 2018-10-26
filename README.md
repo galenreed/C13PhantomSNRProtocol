@@ -14,7 +14,13 @@ We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom
  	- cv5 = 16 (X resolution)
  	- cv6 = 16 (Y resolution). This should give 2cm voxels on a side
 * set NEX = 2
-* Save, download, note the center frequency remains the same, and set the TG to TGnull - 60 (for a 90 degree pulse), and then ia_rf1 = 8192 (for a 22.5 degree pulse) 		  
+* Save, download, note the center frequency remains the same, and set
+  the TG to TGnull - 60 (for a 90 degree pulse), and then ia_rf1 =
+  8192 (for a 22.5 degree pulse)
+
+For the script to run correctly, be sure to
+- center the FOV on the phantom
+- center the frequency at the center of the DMS peak quartet. 
 
 ###  Processing
 
