@@ -9,14 +9,21 @@ addpath('read_MR');
 
 
 files = {'b1mappingUTSWTorso/45/P55296.7', 'b1mappingUTSWTorso/90/P54272.7'};
+files = {'b1mappingUTSWClamshell/45/P59392.7', 'b1mappingUTSWClamshell/90/P60416.7'};
+
+
 
 %
 % reconstruction parameters
-params.integrationWindow = 450; % [Hz] spectra integration width for generating image
-params.lineBroadening = 3; % [Hz] line broadening filter width 
+params.integrationWindow = 550; % [Hz] spectra integration width for generating image
+params.lineBroadening = 1; % [Hz] line broadening filter width 
 params.noiseRegionSize = 8; % [pixels] noise calculated from a square with this edge size
+params.noiseStdThresh = 5; % threshold for noise masks
 params.reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
 params.doPlot = 1;% make a plot of the summed spectra with integration limits
+%params.noiseBandwidth = 1200; % [Hz] bandwidth of spectra over hich to determine noise
+params.plotFontSize = 15;
+
 
 sosImages = {};
 snrMaps = {};
@@ -54,8 +61,8 @@ for ii = 1:length(files)
   
   % turn magnitude images into SNR maps
   if(params.reconMode == RECONSNRMAPS)
-    [mask, noise] = createMaskAndCalculateNoise(sosImages, params);
-    snrMap = (sosImages) / noise;
+    [mask, noiseSTD, noiseMEAN] = createMaskAndCalculateNoise(sosImages, params);
+    snrMap = (sosImages- noiseMEAN) / noiseSTD;
   else 
     snrMap = sosImages;
   end
@@ -76,7 +83,7 @@ for ii = 1:length(files)
   thisFileName = [fileNameRoot num2str(ii) '.mat'];
   load(thisFileName);
   subplot(1, length(files), ii);
-  imagesc(snrMap);
+  imagesc(snrMap');
   colorbar();
   set(gca, 'xtick', [], 'ytick', []);
   title(files{ii});
@@ -85,7 +92,7 @@ for ii = 1:length(files)
   delete(thisFileName);
   
   % grab save the theta/2theta maps if b1mapping
-  if(params.reconMode == RECONB1MAP)
+  if(1)
     if(ii == 1)
       thetaSOS = snrMap;
     elseif(ii == 2)
@@ -109,6 +116,7 @@ if(params.reconMode == RECONB1MAP)
   colorbar();
   title('percent nominal B_1');
   set(gca, 'xtick', [], 'ytick', []);
+  set(gca, 'fontsize', params.plotFontSize);
 end
 
 
