@@ -9,7 +9,7 @@ We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom
 * copy and paste the sequence and change the following CVs:
 	- TR  = 500 ms 
 	- cv0 = 5000 (receive bandwidth in Hz)
-	- cv1 = 256 (number of frequency samples)
+	- cv1 = 1024 (number of frequency samples)
  	- cv3 = 1
  	- cv5 = 16 (X resolution)
  	- cv6 = 16 (Y resolution). This should give 2cm voxels on a side
