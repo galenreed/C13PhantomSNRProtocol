@@ -8,19 +8,17 @@ addpath('utils');
 addpath('read_MR');
 
 
-files = {'b1mappingUTSWTorso/45/P55296.7', 'b1mappingUTSWTorso/90/P54272.7'};
-files = {'b1mappingUTSWClamshell/45/P59392.7', 'b1mappingUTSWClamshell/90/P60416.7'};
-
+files = {'f1', 'f2'};
 
 
 %
 % reconstruction parameters
-params.integrationWindow = 550; % [Hz] spectra integration width for generating image
+params.integrationWindow = 525; % [Hz] spectra integration width for generating image
 params.lineBroadening = 1; % [Hz] line broadening filter width 
 params.noiseRegionSize = 8; % [pixels] noise calculated from a square with this edge size
 params.noiseStdThresh = 5; % threshold for noise masks
 params.reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
-params.doPlot = 1;% make a plot of the summed spectra with integration limits
+params.doPlot = 0;% make a plot of the summed spectra with integration limits
 %params.noiseBandwidth = 1200; % [Hz] bandwidth of spectra over hich to determine noise
 params.plotFontSize = 15;
 
@@ -45,27 +43,31 @@ for ii = 1:length(files)
   end
   
   % reconstruct individual coil images
-  rawImages = fftAndZeroPad(squeezedData, params, header);
+  [MRSIImages]  = fftAndZeroPad(squeezedData, params, header);
   
   % do a sum of squares over channels if needed
   sosImages = [];
   if(multiChannelFlag == 1)
-    sosImages = zeros(size(rawImages, 1), size(rawImages, 2));
-    for jj = 1:size(rawImages, 3)
-      sosImages = sosImages + rawImages(:,:,jj) .* rawImages(:,:,jj);
-    end
-    sosImages = sqrt(sosImages);
+    [sosImages] = MRSISumOfSquares(MRSIImages);
   else
-    sosImages = rawImages;
+    sosImages = MRSIImages;
   end
+  
+  % MRSI to image
+  [integratedData totalSpec] = MRSIToImage(sosImages, params, header);
+  
   
   % turn magnitude images into SNR maps
   if(params.reconMode == RECONSNRMAPS)
-    [mask, noiseSTD, noiseMEAN] = createMaskAndCalculateNoise(sosImages, params);
-    snrMap = (sosImages- noiseMEAN) / noiseSTD;
+    [mask, noiseSTD, noiseMEAN] = createMaskAndCalculateNoise(integratedData, params);
+    snrMap = (integratedData- noiseMEAN) / noiseSTD;
   else 
-    snrMap = sosImages;
+    snrMap = integratedData;
   end
+  
+  %if(ii == 1)
+  %  snrMap = snrMap * sqrt(2);
+  %end
   
   % save to file
   thisFileName = [fileNameRoot num2str(ii) '.mat'];
@@ -78,15 +80,24 @@ end
 thetaSOS = []; 
 twothetaSOS = [];
 figure();
+binEdges = linspace(20, 70, 15);
 for ii = 1:length(files)
   % read from file
   thisFileName = [fileNameRoot num2str(ii) '.mat'];
   load(thisFileName);
   subplot(1, length(files), ii);
-  imagesc(snrMap');
+  imagesc(snrMap, [0 70]);
+  colormap jet;
   colorbar();
   set(gca, 'xtick', [], 'ytick', []);
   title(files{ii});
+  
+  %subplot(2, length(files), ii+length(files));
+  %hist(snrMap(:), binEdges);
+  
+  
+  
+  
   
   %cleanup
   delete(thisFileName);

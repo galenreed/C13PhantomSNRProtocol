@@ -1,0 +1,1 @@
+function [sosData] = MRSISumOfSquares(inputData)  sosData = zeros([size(inputData, 1), size(inputData, 2), size(inputData, 3)]);  for jj = 1:size(inputData, 4)    sosData = sosData + inputData(:,:,:,jj) .* inputData(:,:,:,jj);  end  sosData = sqrt(sosData);end
