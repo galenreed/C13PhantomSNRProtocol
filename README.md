@@ -4,13 +4,13 @@ This code is created to allow cross-experiment testing of receive arrays for lar
 ### Experimental Protocol
 We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom from GE. 
 * Grab the broadband PSD: New Task -> Template -> GE -> 2D MNS FidCSI
-* Prescribe an axial slice, 32 cm FOV, 2 cm slice thickness, 4s TR.
+* Prescribe an axial slice, set the TR to 4s. We are currently using 2
+  separate FOV protocols depending on the size of the coil being tested:
 
-|     X      |head coil | torso protocol |
+|          |head coil | torso coi |
 | :-------: |:--------------:| :-----------:|
 | FOV      | 32 | 48 |
 | slice thickness     | 2 cm        |   3cm |
-| voxel edge size |2 cm       |    3 cm|
 
 * Calibrate the flip angle with the slice-select pulse by setting xmtaddSCAN = 0 (or a value appropriate for a specific coil), soft = 1, pf_rf1 =3600, and ia_rf1 = 32767. Enter the SpectroPrescan screen, and set the center frequency to that of the DMS resonance (which should be 2kHz lower than that of ethylene glycol at 3T). Note the TG value which gives a signal null
 * copy and paste the sequence and change the following CVs:
