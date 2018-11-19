@@ -5,8 +5,9 @@ This code is created to allow cross-experiment testing of receive arrays for lar
 We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom from GE. 
 * Grab the broadband PSD: New Task -> Template -> GE -> 2D MNS FidCSI
 * Prescribe an axial slice, 32 cm FOV, 2 cm slice thickness, 4s TR.
-|           |head coil | torso protocol |
-| :-------: |:---------------:| :-----:|
+
+|     X      |head coil | torso protocol |
+| :-------: |:--------------:| :-----------:|
 | FOV      | 32 | 48 |
 | slice thickness     | 2 cm        |   3cm |
 | voxel edge size |2 cm       |    3 cm|
