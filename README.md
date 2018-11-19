@@ -21,6 +21,7 @@ We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom
 | :-------: |:--------------:| :-----------:|
 | FOV      | 32 | 48 |
 | slice thickness     | 2 cm        |   3cm |
+| phantom    | small        |   large |
 
 * Calibrate the flip angle with the slice-select pulse by setting xmtaddSCAN = 0 (or a value appropriate for a specific coil), soft = 1, pf_rf1 =3600, and ia_rf1 = 32767. Enter the SpectroPrescan screen, and set the center frequency to that of the DMS resonance (which should be 2kHz lower than that of ethylene glycol at 3T). Note the TG value which gives a signal null
 * copy and paste the sequence and change the following CVs:
