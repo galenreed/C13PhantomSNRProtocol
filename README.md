@@ -2,12 +2,19 @@
 ### Introduction
 This code is created to allow cross-experiment testing of receive arrays for large volume phantoms. The current example shows comparison of 2 13C-tuned receive coils compared between different sites. 
 ### Experimental Protocol
-We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom from GE. 
+We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom from GE.
+
+![](https://github.com/galenreed/C13PhantomSNRProtocol/generalInfo.jpg)
+
+> a) DMS phantom, with ring loader, in a head coil. b) DMS structure. c) DMS 13C spectra. d) DMS 13C saturation recovery curve (T1 = 900 ms)
+
+
+
 * Grab the broadband PSD: New Task -> Template -> GE -> 2D MNS FidCSI
 * Prescribe an axial slice, set the TR to 4s. We are currently using 2
   separate FOV protocols depending on the size of the coil being tested:
 
-|          |head coil | torso coi |
+|          |head coil | torso coil |
 | :-------: |:--------------:| :-----------:|
 | FOV      | 32 | 48 |
 | slice thickness     | 2 cm        |   3cm |
