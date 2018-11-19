@@ -8,6 +8,9 @@ We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom
 
 > a) DMS phantom, with ring loader, in a head coil. b) DMS structure. c) DMS 13C spectra. d) DMS 13C saturation recovery curve (T1 = 900 ms)
 
+![](https://github.com/galenreed/C13PhantomSNRProtocol/blob/master/phantoms.jpg)
+
+> torso- and head-sized DMS phantoms with respective ring loaders. 
 
 
 * Grab the broadband PSD: New Task -> Template -> GE -> 2D MNS FidCSI

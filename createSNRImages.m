@@ -8,17 +8,17 @@ addpath('utils');
 addpath('read_MR');
 
 
-files = {'f1', 'f2'};
+files = {'utsw20181119/256pts/P20992.7', 'utsw20181119/1024pts/P19968.7', 'utsw20181119/2048pts/P22016.7'};
 
 
 %
 % reconstruction parameters
-params.integrationWindow = 525; % [Hz] spectra integration width for generating image
+params.integrationWindow = 500; % [Hz] spectra integration width for generating image
 params.lineBroadening = 1; % [Hz] line broadening filter width 
 params.noiseRegionSize = 8; % [pixels] noise calculated from a square with this edge size
 params.noiseStdThresh = 5; % threshold for noise masks
 params.reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
-params.doPlot = 0;% make a plot of the summed spectra with integration limits
+params.doPlot = 1;% make a plot of the summed spectra with integration limits
 %params.noiseBandwidth = 1200; % [Hz] bandwidth of spectra over hich to determine noise
 params.plotFontSize = 15;
 
