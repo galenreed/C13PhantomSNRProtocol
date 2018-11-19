@@ -4,7 +4,7 @@ This code is created to allow cross-experiment testing of receive arrays for lar
 ### Experimental Protocol
 We are currently using the 18 cm diameter dimethyl silicone (DMS) sphere phantom from GE.
 
-![](https://github.com/galenreed/C13PhantomSNRProtocol/generalInfo.jpg)
+![](https://github.com/galenreed/C13PhantomSNRProtocol/blob/master/generalInfo.jpg)
 
 > a) DMS phantom, with ring loader, in a head coil. b) DMS structure. c) DMS 13C spectra. d) DMS 13C saturation recovery curve (T1 = 900 ms)
 
