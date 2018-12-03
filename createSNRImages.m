@@ -19,7 +19,7 @@ global RECONSPECCOILS = 2
 
 
 
-files = {'pfiles_PM/P33280.7', 'pfiles_day2_am/P57856.7'}; % PM, 4 good channels
+files = {'pfiles_100318/P77312.7', }; % PM, 4 good channels
 
 
 
@@ -30,9 +30,9 @@ params.lineBroadening = 3; % [Hz] line broadening filter width
 params.noiseRegionSize = 8; % [pixels] noise calculated from a square with this edge size
 params.noiseStdThresh = 5; % threshold for noise masks
 params.reconMode = RECONSPECCOILS; 
-params.doPlot = 1;% make a plot of the summed spectra with integration limits
+params.doPlot = 0;% make a plot of the summed spectra with integration limits
 params.plotFontSize = 15;
-params.displaySingleChannels = 1;% plot all coil elements in an array 
+params.displaySingleChannels = 1;% plot all coil elements in an array, if on, set params.doPlot = 0   
 
 
 % this list is only used when params.reconMode == RECONSPECCOILS
@@ -40,7 +40,7 @@ params.displaySingleChannels = 1;% plot all coil elements in an array
 % then put -1 instead of a vector for that entry
 % otherwise, put a vector containing the desired coils to include
 % in the SOS operation
-SOSChannelList = {[1 3 4 8], [1 2 3 4]};
+SOSChannelList = {[1 2 3 4]};
 
 
 sosImages = {};
@@ -68,7 +68,7 @@ for ii = 1:length(files)
   % do a sum of squares over channels if needed
   sosImages = [];
   if(multiChannelFlag == 1)
-    if(params.reconMode ==RECONSPECCOILS )  
+    if(params.reconMode == RECONSPECCOILS)  
         [sosImages] = MRSISumOfSquares(MRSIImages, SOSChannelList{ii});
     else 
         [sosImages] = MRSISumOfSquares(MRSIImages, -1);
@@ -78,16 +78,16 @@ for ii = 1:length(files)
   end
   
   %plot single channels
-  if(params.displaySingleChannels == 1)
-    figure();
+  if(params.displaySingleChannels == 1 && multiChannelFlag == 1)
+    figure(99);
     nCoils = size(MRSIImages, 4);
-    for jj = 1:nCoils
-      singleCoilImage = MRSIToImage(squeeze(MRSIImages(:,:,:,jj)), params, header);
-      subplot(2, nCoils/2, jj);
+    for cc = 1:nCoils
+      singleCoilImage = MRSIToImage(squeeze(MRSIImages(:,:,:,cc)), params, header);
+      subplot(2, nCoils/2, cc);
       imagesc(singleCoilImage);
       set(gca, 'xtick', []);
       set(gca, 'ytick', []);
-      title(num2str(jj));
+      title(num2str(cc));
     end
   end
   
@@ -96,9 +96,9 @@ for ii = 1:length(files)
   
   
   % turn magnitude images into SNR maps
-  if(params.reconMode == RECONSNRMAPS)
+  if(params.reconMode == RECONSNRMAPS || params.reconMode == RECONSPECCOILS)
     [mask, noiseSTD, noiseMEAN] = createMaskAndCalculateNoise(integratedData, params);
-    snrMap = (integratedData- noiseMEAN) / noiseSTD;
+    snrMap = (integratedData - noiseMEAN) / noiseSTD;
   else 
     snrMap = integratedData;
   end
