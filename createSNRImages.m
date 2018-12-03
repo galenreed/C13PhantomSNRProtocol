@@ -7,27 +7,46 @@ close all;
 addpath('utils');
 addpath('read_MR');
 
+% recon mode options:
+% 1: SOS over all coils, output in SNR units
+% 2: B1 mapping. 
+% 3: SOS over specified coils only, output in SNR units
 
-files = {'utsw20181119/256pts/P20992.7', 'utsw20181119/1024pts/P19968.7', 'utsw20181119/2048pts/P22016.7'};
+
+global RECONSNRMAPS = 0
+global RECONB1MAP = 1
+global RECONSPECCOILS = 2
+
+
+
+files = {'pfiles_PM/P33280.7', 'pfiles_day2_am/P57856.7'}; % PM, 4 good channels
+
 
 
 %
 % reconstruction parameters
 params.integrationWindow = 500; % [Hz] spectra integration width for generating image
-params.lineBroadening = 1; % [Hz] line broadening filter width 
+params.lineBroadening = 3; % [Hz] line broadening filter width 
 params.noiseRegionSize = 8; % [pixels] noise calculated from a square with this edge size
 params.noiseStdThresh = 5; % threshold for noise masks
-params.reconMode = 0; % 0 for multiple images in SNR units, 1 for B1 mapping. 
+params.reconMode = RECONSPECCOILS; 
 params.doPlot = 1;% make a plot of the summed spectra with integration limits
-%params.noiseBandwidth = 1200; % [Hz] bandwidth of spectra over hich to determine noise
 params.plotFontSize = 15;
+params.displaySingleChannels = 1;% plot all coil elements in an array 
+
+
+% this list is only used when params.reconMode == RECONSPECCOILS
+% if summing over all channels is desired for the selected file,
+% then put -1 instead of a vector for that entry
+% otherwise, put a vector containing the desired coils to include
+% in the SOS operation
+SOSChannelList = {[1 3 4 8], [1 2 3 4]};
 
 
 sosImages = {};
 snrMaps = {};
 fileNameRoot = 'snrMaps';
-RECONSNRMAPS = 0;
-RECONB1MAP = 1;
+
 
 for ii = 1:length(files)
   
@@ -45,12 +64,31 @@ for ii = 1:length(files)
   % reconstruct individual coil images
   [MRSIImages]  = fftAndZeroPad(squeezedData, params, header);
   
+  
   % do a sum of squares over channels if needed
   sosImages = [];
   if(multiChannelFlag == 1)
-    [sosImages] = MRSISumOfSquares(MRSIImages);
+    if(params.reconMode ==RECONSPECCOILS )  
+        [sosImages] = MRSISumOfSquares(MRSIImages, SOSChannelList{ii});
+    else 
+        [sosImages] = MRSISumOfSquares(MRSIImages, -1);
+    end
   else
     sosImages = MRSIImages;
+  end
+  
+  %plot single channels
+  if(params.displaySingleChannels == 1)
+    figure();
+    nCoils = size(MRSIImages, 4);
+    for jj = 1:nCoils
+      singleCoilImage = MRSIToImage(squeeze(MRSIImages(:,:,:,jj)), params, header);
+      subplot(2, nCoils/2, jj);
+      imagesc(singleCoilImage);
+      set(gca, 'xtick', []);
+      set(gca, 'ytick', []);
+      title(num2str(jj));
+    end
   end
   
   % MRSI to image
@@ -65,9 +103,7 @@ for ii = 1:length(files)
     snrMap = integratedData;
   end
   
-  %if(ii == 1)
-  %  snrMap = snrMap * sqrt(2);
-  %end
+  
   
   % save to file
   thisFileName = [fileNameRoot num2str(ii) '.mat'];
