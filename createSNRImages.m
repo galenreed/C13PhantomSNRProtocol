@@ -7,17 +7,16 @@ close all;
 addpath('utils');
 addpath('read_MR');
 
+
+global RECONSNRMAPS RECONB1MAP RECONSPECCOILS 
+
 % recon mode options:
-% 1: SOS over all coils, output in SNR units
-% 2: B1 mapping. 
-% 3: SOS over specified coils only, output in SNR units
-
-
-global RECONSNRMAPS = 0
-global RECONB1MAP = 1
-global RECONSPECCOILS = 2
-
-
+% 0: SOS over all coils, output in SNR units
+RECONSNRMAPS = 0
+% 1: B1 mapping. 
+RECONB1MAP = 1
+% 2: SOS over specified coils only, output in SNR units
+RECONSPECCOILS = 2
 
 files = {'pfiles_100318/P77312.7', }; % PM, 4 good channels
 
@@ -79,7 +78,7 @@ for ii = 1:length(files)
   
   %plot single channels
   if(params.displaySingleChannels == 1 && multiChannelFlag == 1)
-    figure(99);
+    figure();
     nCoils = size(MRSIImages, 4);
     for cc = 1:nCoils
       singleCoilImage = MRSIToImage(squeeze(MRSIImages(:,:,:,cc)), params, header);
